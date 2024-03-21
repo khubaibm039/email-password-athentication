@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+    updateProfile,
+} from "firebase/auth";
 import auth from "../../Firebase/Firebase.config";
 import { useState } from "react";
 import { IoMdEyeOff, IoIosEye } from "react-icons/io";
@@ -11,7 +15,7 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault(); // page won't reload
-
+        const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
         if (password.length < 6) {
@@ -35,6 +39,20 @@ const Register = () => {
             .then((result) => {
                 console.log(result.user);
                 setSuccess("User Created Successful");
+
+                //update profile
+                updateProfile(result.user, { displayName: name, photoURL: "" })
+                    .then(() => {
+                        console.log("profile updated");
+                    })
+                    .catch((error) => {
+                        console.log(error.message);
+                    });
+
+                // send verification email:
+                sendEmailVerification(result.user).then(() => {
+                    alert("please check your email and verify your account");
+                });
             })
             .catch((error) => {
                 console.log(error.message);
@@ -48,6 +66,14 @@ const Register = () => {
             <div className="mx-auto md:w-1/2">
                 <h3 className="text-3xl mb-8">Please Register</h3>
                 <form onSubmit={handleRegister}>
+                    <input
+                        className="mb-4 w-full py-2 px-4 rounded-lg"
+                        type="text"
+                        name="name"
+                        placeholder="enter your name"
+                        required
+                    />
+                    <br />
                     <input
                         className="mb-4 w-full py-2 px-4 rounded-lg"
                         type="email"
