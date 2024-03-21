@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../Firebase/Firebase.config";
 import { useState } from "react";
 import { IoMdEyeOff, IoIosEye } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const [registerError, setRegisterError] = useState("");
@@ -89,6 +90,12 @@ const Register = () => {
                         type="submit"
                         name="register"
                     />
+                    <p>
+                        Already have an account
+                        <Link className="text-green-600 ml-2" to={"/login"}>
+                            Login here
+                        </Link>
+                    </p>
                 </form>
                 {registerError && (
                     <p className="text-red-700">{registerError}</p>

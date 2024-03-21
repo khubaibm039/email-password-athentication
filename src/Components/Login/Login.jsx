@@ -1,10 +1,15 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+    sendPasswordResetEmail,
+    signInWithEmailAndPassword,
+} from "firebase/auth";
 import auth from "../../Firebase/Firebase.config";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const [loginError, setLoginError] = useState("");
     const [success, setSuccess] = useState("");
+    const emailRef = useRef(null);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -26,6 +31,27 @@ const Login = () => {
             });
     };
 
+    const handleForgetPassword = () => {
+        const email = emailRef.current.value;
+        if (!email) {
+            console.log("Please provide an email", emailRef.current.value);
+            return;
+        } else if (
+            !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+        ) {
+            console.log("Please write a valid email");
+            return;
+        }
+        // send validation email
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                console.log("please check your email");
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+    };
+
     return (
         <div>
             <div className="hero min-h-screen bg-base-200">
@@ -39,6 +65,7 @@ const Login = () => {
                                 <input
                                     type="email"
                                     placeholder="email"
+                                    ref={emailRef}
                                     className="input input-bordered"
                                     name="email"
                                     required
@@ -57,6 +84,7 @@ const Login = () => {
                                 />
                                 <label className="label">
                                     <a
+                                        onClick={handleForgetPassword}
                                         href="#"
                                         className="label-text-alt link link-hover"
                                     >
@@ -69,6 +97,15 @@ const Login = () => {
                                     Login
                                 </button>
                             </div>
+                            <p>
+                                New to this website? please
+                                <Link
+                                    className="text-green-600 ml-2"
+                                    to={"/register"}
+                                >
+                                    Register here
+                                </Link>
+                            </p>
                         </form>
                     </div>
                     <div className="my-5 text-center">
