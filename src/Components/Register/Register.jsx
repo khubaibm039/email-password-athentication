@@ -48,32 +48,44 @@ const Register = () => {
                 <h3 className="text-3xl mb-8">Please Register</h3>
                 <form onSubmit={handleRegister}>
                     <input
-                        className="mb-4 w-3/4 py-2 px-4 rounded-lg"
+                        className="mb-4 w-full py-2 px-4 rounded-lg"
                         type="email"
                         name="email"
                         placeholder="enter your email"
                         required
                     />
                     <br />
-                    <div>
+                    <div className="relative ">
                         <input
-                            className="w-3/4 mb-4 py-2 px-4 rounded-lg  "
+                            className="w-full py-2 px-4 rounded-lg  "
                             type={isShow ? "text" : "password"}
                             name="password"
                             placeholder="enter your password"
                             required
                         />
                         <span
-                            className="cursor-pointer text-2xl"
+                            className="cursor-pointer text-2xl absolute top-2 right-2"
                             onClick={() => setIsShow(!isShow)}
                         >
                             {isShow ? <IoIosEye /> : <IoMdEyeOff />}
                         </span>
                     </div>
-
+                    <br />
+                    <div className="my-2">
+                        <input
+                            className="mr-2 "
+                            type="checkbox"
+                            name="terms"
+                            id="terms"
+                            required
+                        />
+                        <a href="">
+                            <label htmlFor="terms">Accepts out terms</label>
+                        </a>
+                    </div>
                     <br />
                     <input
-                        className="btn btn-primary my-4 w-3/4"
+                        className="btn btn-primary my-4 w-full"
                         type="submit"
                         name="register"
                     />
